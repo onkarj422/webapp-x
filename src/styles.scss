@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+$mdc-theme-primary: #222d32; // change primary color example
+$mdc-theme-secondary: #FFAB00; // change secondary color example
+$mdc-theme-primary-light: #ff7961; // Purple 200
+$mdc-theme-primary-dark: #ba000d; // Purple 800
+$mdc-theme-secondary-light: #ffc046; // Orange A100
+$mdc-theme-secondary-dark: #c56000;
+$mdc-theme-background: #FFFFFF;
+
+@import "~@angular-mdc/theme/material";
+
+body {
+	background-color: var(--mdc-theme-background);
+	padding: 0;
+	margin: 0;
+}
+
+.fivepxdiv {
+	height: 5px;
+}
+
+.tenpxdiv {
+	height: 10px;
+}
+
+.twenpxdiv {
+	height: 20px;
+}

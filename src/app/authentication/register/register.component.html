@@ -1,0 +1,55 @@
+<form [formGroup]="registerForm">
+  <mat-horizontal-stepper (selectionChange)="stepChange()" formArrayName="formArray" [linear]="true" #stepper="matHorizontalStepper">
+    <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
+      <ng-template matStepLabel>FILL OUT EMAIL AND PASSWORD</ng-template>
+      <div fxLayout="column">
+        <mat-form-field color="accent">
+          <input matInput placeholder="Email" type="email" name="email" formControlName="email" required>
+          <mat-error *ngIf="formArray?.get([0]).controls.email.errors?.required">Email is <strong>required!</strong></mat-error>
+          <mat-error *ngIf="formArray?.get([0]).controls.email.errors?.email">Please, enter a valid email address!</mat-error>
+        </mat-form-field>
+        <div class="fivepxdiv"></div>
+        <mat-form-field color="accent">
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" name="password" formControlName="password" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="formArray?.get([0]).controls.password.errors?.required">Password is <strong>required!</strong></mat-error>
+        </mat-form-field>
+      </div>
+    </mat-step>
+    <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
+      <ng-template matStepLabel>PERSONAL DETAILS</ng-template>
+      <div fxLayout="column">
+        <mat-form-field color="accent" hintLabel="First Name Last Name">
+          <input matInput type="text" name="name" placeholder="Full Name" formControlName="name" required>
+          <mat-error *ngIf="formArray?.get([1]).controls.name.errors?.required">Name is <strong>required!</strong></mat-error>
+        </mat-form-field>
+        <div class="fivepxdiv"></div>
+        <mat-form-field color="accent" hintLabel="Max 10 digits">
+          <input matInput (keypress)="mobileNoValidation($event)" #contactInput type="text" name="contact" placeholder="Mobile Number" minlength="10" maxlength="10" formControlName="contact" required>
+          <mat-hint align="end">{{contactInput.value?.length || 0}}/10</mat-hint>
+          <mat-error *ngIf="formArray?.get([1]).controls.contact.errors?.required">Mobile number is <strong>required!</strong></mat-error>
+          <mat-error *ngIf="formArray?.get([1]).controls.contact.errors?.minlength">Mobile number should be exactly 10 digits!</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-step>
+    <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
+      <ng-template matStepLabel>DELIVERY ADDRESS</ng-template>
+      <div>
+        <p>
+          <mat-form-field custom custom-width="100%" color="accent" hintLabel="Flat/House Number, Building/Apartment, Street, Area">
+            <textarea matInput name="address" placeholder="Address" formControlName="address"></textarea>
+            <mat-error *ngIf="formArray?.get([2]).controls.address.errors?.required">Address is <strong>required!</strong></mat-error>
+          </mat-form-field>
+        </p>
+        <mat-form-field color="accent">
+          <input matInput type="text" name="state" placeholder="State" formControlName="state" required>
+          <mat-error *ngIf="formArray?.get([2]).controls.state.errors?.required">State is <strong>required!</strong></mat-error>
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput type="text" name="city" placeholder="City" formControlName="city" required>
+          <mat-error *ngIf="formArray?.get([2]).controls.city.errors?.required">City is <strong>required!</strong></mat-error>
+        </mat-form-field>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</form>

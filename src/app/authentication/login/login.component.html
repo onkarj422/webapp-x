@@ -1,0 +1,27 @@
+<form [formGroup]="loginForm">
+  <div fxLayout="column">
+    <mat-form-field color="accent">
+      <input matInput placeholder="Email" type="email" name="email" formControlName="email" required>
+      <mat-error *ngIf="loginForm.controls['email'].errors?.required">Email is <strong>required!</strong></mat-error>
+      <mat-error *ngIf="loginForm.controls['email'].errors?.email">Please, enter a valid email address!</mat-error>
+    </mat-form-field>
+    <div class="fivepxdiv"></div>
+    <mat-form-field color="accent">
+      <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" name="password" formControlName="password" required>
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      <mat-error *ngIf="loginForm.controls['password'].errors?.required">Password is <strong>required!</strong></mat-error>
+    </mat-form-field>
+  </div>
+</form>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div custom custom-height="2px" custom-background="black" custom-opacity="0.7"></div>
+  <span style="margin: 5px 0;">OR</span>
+  <div custom custom-height="2px" custom-background="black" custom-opacity="0.7"></div>
+</div>
+<div class="tenpxdiv"></div>
+<div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px">
+  <button custom mdc-button raised="true" icon="true" custom-background="white" custom-text-color="#778690">
+    <mdc-icon><img src="../../../assets/google.svg" alt="G"></mdc-icon>Sign In With Google</button>
+  <button custom mdc-button raised="true" icon="true" custom-background="#3b5998">
+    <i style="margin-right: 10px;" class="fa fa-facebook"></i>Sign In With Facebook</button>
+</div>
