@@ -3,8 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-
-import { StorageModule } from '@cedx/ngx-webstorage';
+import { WebStorageModule } from "h5webstorage";
 import { AppComponent } from './app.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HomeComponent } from './home/home.component';
@@ -20,15 +19,16 @@ import { LoginDialog } from './login-dialog';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    StorageModule,
     AppRoutingModule,
     AuthenticationModule,
-    AppCommonModule
+    AppCommonModule,
+    WebStorageModule.forRoot()
   ],
   entryComponents: [
     LoginDialog
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

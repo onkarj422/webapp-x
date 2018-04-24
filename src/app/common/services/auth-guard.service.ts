@@ -2,11 +2,12 @@ import { Injectable }     from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { SessionService } from './session.service';
 import { Observable } from 'rxjs/Observable';
+import { CryptService } from './crypt.service';
 
 @Injectable()
 export class AuthGuardAdmin implements CanActivate {
 
-	constructor(private session: SessionService, private router: Router) {
+	constructor(private session: SessionService, private router: Router, private crypt: CryptService) {
 
 	}
 
@@ -18,7 +19,7 @@ export class AuthGuardAdmin implements CanActivate {
       data => {
         console.log(data);
         if (data.isLoggedIn) {
-          return ((data.userRoleId === 1) ? Observable.of(true) : Observable.of(false));
+          return ((this.crypt.compare(data.userRole, "admin")) ? Observable.of(true) : Observable.of(false));
         } else {
           return Observable.of(false);
         }
@@ -30,7 +31,7 @@ export class AuthGuardAdmin implements CanActivate {
 @Injectable()
 export class AuthGuardCustomer implements CanActivate {
 
-  constructor(private session: SessionService, private router: Router) {
+  constructor(private session: SessionService, private router: Router, private crypt: CryptService) {
 
   }
 
@@ -41,7 +42,7 @@ export class AuthGuardCustomer implements CanActivate {
     return this.session.checkLogin().switchMap(
       data => {
         if (data.isLoggedIn) {
-          return ((data.userRole === 2) ? Observable.of(true) : Observable.of(false));
+          return ((this.crypt.compare(data.userRole, "customer")) ? Observable.of(true) : Observable.of(false));
         } else {
           return Observable.of(false);
         }
@@ -53,7 +54,7 @@ export class AuthGuardCustomer implements CanActivate {
 @Injectable()
 export class AuthGuardDeliveryMan implements CanActivate {
 
-  constructor(private session: SessionService, private router: Router) {
+  constructor(private session: SessionService, private router: Router, private crypt: CryptService) {
 
   }
 
@@ -64,7 +65,7 @@ export class AuthGuardDeliveryMan implements CanActivate {
     return this.session.checkLogin().switchMap(
       data => {
         if (data.isLoggedIn) {
-          return ((data.userRole === 3) ? Observable.of(true) : Observable.of(false));
+          return ((this.crypt.compare(data.userRole, "deliveryman")) ? Observable.of(true) : Observable.of(false));
         } else {
           return Observable.of(false);
         }
@@ -76,7 +77,7 @@ export class AuthGuardDeliveryMan implements CanActivate {
 @Injectable()
 export class AuthGuardChief implements CanActivate {
 
-  constructor(private session: SessionService, private router: Router) {
+  constructor(private session: SessionService, private router: Router, private crypt: CryptService) {
 
   }
 
@@ -87,7 +88,7 @@ export class AuthGuardChief implements CanActivate {
     return this.session.checkLogin().switchMap(
       data => {
         if (data.isLoggedIn) {
-          return ((data.userRole === 4) ? Observable.of(true) : Observable.of(false));
+          return ((this.crypt.compare(data.userRole, "chief")) ? Observable.of(true) : Observable.of(false));
         } else {
           return Observable.of(false);
         }

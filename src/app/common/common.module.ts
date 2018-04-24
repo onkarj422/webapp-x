@@ -7,7 +7,7 @@ import { AngularMaterialModule } from './component-library-modules/angular-mater
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CustomDirective } from './directives/custom.directive';
 import { DividerComponent } from './components/divider.component';
-import {Ng2Webstorage} from 'ngx-webstorage';
+import { CryptService } from './services/crypt.service';
 import { HttpService } from './services/http.service';
 import { SessionService } from './services/session.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,8 +25,7 @@ import { AuthService } from './services/auth.service';
     MdcModule,
     FlexLayoutModule,
     AngularMaterialModule,
-    HttpClientModule,
-    Ng2Webstorage
+    HttpClientModule
   ],
   exports: [
   	CommonModule,
@@ -36,8 +35,7 @@ import { AuthService } from './services/auth.service';
     FlexLayoutModule,
     AngularMaterialModule,
     CustomDirective,
-    DividerComponent,
-    Ng2Webstorage
+    DividerComponent
   ],
   declarations: [
     CustomDirective, 
@@ -46,6 +44,7 @@ import { AuthService } from './services/auth.service';
   providers: [
     HttpService,
     SessionService,
+    CryptService,
     AuthGuardAdmin,
     AuthGuardCustomer,
     AuthGuardDeliveryMan,

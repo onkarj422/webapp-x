@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { LocalStorage, SessionStorage, StorageProperty } from 'h5webstorage';
+import { CryptService } from './crypt.service';
 import { HttpService } from './http.service';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './auth.service';
@@ -7,47 +8,45 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class SessionService {
 
-	public userRole: string;
-	public userData: any;
-  public isLoggedIn: boolean = false;
-  public redirectUrl: string;
+	@StorageProperty({ storage: 'Session' }) public userRole: string = null;
+	@StorageProperty({ storage: 'Session' }) public userData: any = null;
+  @StorageProperty({ storage: 'Session' }) public isLoggedIn: boolean = false;
+  @StorageProperty({ storage: 'Local' }) public keepLoggedIn: boolean = true;
+  @StorageProperty({ storage: 'Local' }) private accessData: any = null;
 
   constructor(
-    private localStore: LocalStorageService,
-    private sessionStore: SessionStorageService,
+    private localStore: LocalStorage,
+    private sessionStore: SessionStorage,
     private apiService: HttpService,
-    private auth: AuthService
-  ) {
-    localStore.store('keepLoggedIn', true);
-  }
+    private auth: AuthService,
+    private crypt: CryptService
+  ) { }
 
   sessionServiceInit() {
-    if (this.localStore.retrieve('keepLoggedIn')) {
-      if (this.sessionStore.retrieve('isLoggedIn')) {
+    if (this.keepLoggedIn) {
+      console.log("Login is persistent");
+      if (this.isLoggedIn) {
         return;
       } else {
-        this.start(this.localStore.retrieve('accessData'));
+        this.start(this.accessData);
       }
-    } else { 
-      this.sessionStore.store('isLoggedIn', false);
+    } else {
+      this.end();
     }
   }
 
   start(data) {
   	this.apiService.apiSessionInit(data).subscribe(
   		data => {
-        this.sessionStore.store('userData', JSON.stringify(data));
-        this.sessionStore.store('isLoggedIn', true);
-        this.sessionStore.store('userRoleId', data.userRoleId);
-        this.userRole = data.userRole;
+        let role: string = this.crypt.encrypt(this.getUserRole(data.userRoleId));
         this.userData = data;
         this.isLoggedIn = true;
-        let sessionData = {
+        this.userRole = role;
+        this.accessData = {
           'email': data.Email,
-          'userRoleId': data.userRoleId,
+          'userRole': role,
           'userId': data.userId
         };
-        this.localStore.store('accessData', JSON.stringify(sessionData));
   		},
   		error => {
   			console.log(error);
@@ -56,15 +55,13 @@ export class SessionService {
   }
 
   togglekeepLoggedIn(toggle: boolean) {
-    this.localStore.store('keepLoggedIn', toggle);
+    !this.keepLoggedIn;
   }
 
   checkLogin(): Observable<any> {
-    const sessionLogin = this.sessionStore.retrieve('isLoggedIn');
-    const isLoggedIn: boolean = new Boolean(sessionLogin).valueOf();
     let data = {
-      "isLoggedIn": isLoggedIn,
-      "userRoleId": this.sessionStore.retrieve("userRoleId")
+      "isLoggedIn": this.isLoggedIn,
+      "userRole": this.userRole
     };
     return Observable.of(data);
   }
@@ -92,4 +89,8 @@ export class SessionService {
     return role;
   }
 
+  end() {
+    this.sessionStore.clear();
+    this.localStore.clear();
+  }
 }
