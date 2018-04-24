@@ -19,9 +19,13 @@
     <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
       <ng-template matStepLabel>PERSONAL DETAILS</ng-template>
       <div fxLayout="column">
-        <mat-form-field color="accent" hintLabel="First Name Last Name">
-          <input matInput type="text" name="name" placeholder="Full Name" formControlName="name" required>
-          <mat-error *ngIf="formArray?.get([1]).controls.name.errors?.required">Name is <strong>required!</strong></mat-error>
+        <mat-form-field color="accent">
+          <input matInput type="text" name="firstname" placeholder="First Name" formControlName="firstname" required>
+          <mat-error *ngIf="formArray?.get([1]).controls.firstname.errors?.required">Your full name is <strong>required!</strong></mat-error>
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput type="text" name="lastname" placeholder="Last Name" formControlName="lastname" required>
+          <mat-error *ngIf="formArray?.get([1]).controls.lastname.errors?.required">Your full name is <strong>required!</strong></mat-error>
         </mat-form-field>
         <div class="fivepxdiv"></div>
         <mat-form-field color="accent" hintLabel="Max 10 digits">
@@ -36,14 +40,14 @@
       <ng-template matStepLabel>DELIVERY ADDRESS</ng-template>
       <div>
         <p>
-          <mat-form-field custom custom-width="100%" color="accent" hintLabel="Flat/House Number, Building/Apartment, Street, Area">
-            <textarea matInput name="address" placeholder="Address" formControlName="address"></textarea>
+          <mat-form-field custom custom-width="100%" color="accent" hintLabel="Flat/House Number, Building/Apartment, Street">
+            <textarea matInput name="address" placeholder="Street Address" formControlName="address"></textarea>
             <mat-error *ngIf="formArray?.get([2]).controls.address.errors?.required">Address is <strong>required!</strong></mat-error>
           </mat-form-field>
         </p>
         <mat-form-field color="accent">
-          <input matInput type="text" name="state" placeholder="State" formControlName="state" required>
-          <mat-error *ngIf="formArray?.get([2]).controls.state.errors?.required">State is <strong>required!</strong></mat-error>
+          <input matInput type="text" name="area" placeholder="area" formControlName="area" required>
+          <mat-error *ngIf="formArray?.get([2]).controls.area.errors?.required">Area is <strong>required!</strong></mat-error>
         </mat-form-field>
         <mat-form-field color="accent">
           <input matInput type="text" name="city" placeholder="City" formControlName="city" required>

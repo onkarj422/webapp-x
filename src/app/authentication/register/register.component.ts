@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng4-validators';
+import { AuthService } from '../../common/services/auth.service';
+import { SessionService } from '../../common/services/session.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,7 @@ export class RegisterComponent implements OnInit {
   stepLength: number;
 	hide = true;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private session: SessionService) { }
 
   mobileNoValidation(event: any) {
   	const pattern = /[0-9\+\-\ ]/;
@@ -41,7 +43,19 @@ export class RegisterComponent implements OnInit {
           value[l] = formArray[n][l];
         }
       }
-      console.log(value);
+      value['userRole'] = 2;
+      this.auth.register(value).then(
+        data => {
+          if (data['result']) {
+            console.log(data);
+            this.session.start(data);
+          } else if (data['error'] == "exists") {
+            console.log("Email address already registered!");
+          } else {
+            console.log("Unknown error occurred!");
+          }
+        }
+      );
     } else {
       for (var i in controls) {
         controls[i].markAsTouched();
@@ -61,12 +75,13 @@ export class RegisterComponent implements OnInit {
           password: new FormControl('', Validators.required)
         }),
         this.formBuilder.group({
-          name: new FormControl('', Validators.required),
+          firstname: new FormControl('', Validators.required),
+          lastname: new FormControl('', Validators.required),
           contact: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10)]))  
         }),
         this.formBuilder.group({
           address: new FormControl('', Validators.required),
-          state: new FormControl('', Validators.required),
+          area: new FormControl('', Validators.required),
           city: new FormControl('', Validators.required)
         })
       ])

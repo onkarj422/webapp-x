@@ -6,19 +6,15 @@
       </mdc-app-bar-title>
     </mdc-app-bar-section>
     <mdc-app-bar-section align="end">
+      <div class="tabs" fxLayout="row">
+        <button class="tab-button" routerLink="/home" routerLink="/" mat-button>HOME</button>
+        <button class="tab-button" mat-button>SALADS</button>
+        <button class="tab-button" mat-button>PLANS</button>
+        <button class="tab-button" mat-button>ORDERS</button>
+        <button class="tab-button" routerLink="/admin" mat-button>ADMIN</button>
+      </div> 
       <button mdcAppBarActionItem (click)="openLogin()" mdc-button [secondary]="true" [raised]="true">SIGN IN</button>
     </mdc-app-bar-section>
-  </mdc-app-bar-row>
-</mdc-app-bar>
-<mdc-app-bar class="app-bar">
-  <mdc-app-bar-row>
-    <p mdc-typography-display3>NUTRITION
-        <br> LOGO</p>
-  </mdc-app-bar-row>
-  <mdc-app-bar-row>
-    <mdc-app-bar-title>
-      <button (click)="apiCall()" mdc-button raised="true" secondary="true">Order Now</button>
-    </mdc-app-bar-title>
   </mdc-app-bar-row>
 </mdc-app-bar>
 <div class="outlet-container">
