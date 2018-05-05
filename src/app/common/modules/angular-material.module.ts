@@ -15,7 +15,12 @@ import {
     MatRadioModule,
     MatSidenavModule,
     MatStepperModule,
-    MatSelectModule } from '@angular/material';
+    MatSelectModule,
+    MatMenuModule } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
   imports: [
@@ -34,7 +39,12 @@ import {
     MatRadioModule,
     MatSidenavModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    CdkTableModule
   ],
   exports: [
     MatButtonModule,
@@ -51,7 +61,12 @@ import {
     MatRadioModule,
     MatSidenavModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    CdkTableModule
   ],
   declarations: []
 })

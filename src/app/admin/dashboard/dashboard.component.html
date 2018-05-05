@@ -1,3 +1,52 @@
-<div custom custom-height="100px" custom-width="400px" custom-background="black">
-	Hello
+<mat-toolbar #matToolbar custom custom-background="#00e676">
+  <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+    <button fxHide.gt-xs mat-icon-button>
+    	<mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <span mdc-typography-headline>ADMIN</span>
+    <span fxFlex></span>
+    <button mat-icon-button>
+    	<mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="sidenav-layout-container">
+ 	<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav-panel" mode="side" opened="media.isActive('gt-xs')" [mdc-elevation]="10" #sidenav>
+      <mat-nav-list>
+        <mat-list-item [routerLink]="['/admin/orders']">
+          <mat-icon mat-list-icon>add_shopping_cart</mat-icon>
+          <h4 mat-line>Orders</h4>
+        </mat-list-item>
+        <mdc-list-divider padded="true"></mdc-list-divider>
+        <mat-list-item [routerLink]="['/admin/customers']">
+          <mat-icon mat-list-icon>people</mat-icon>
+          <h4 mat-line>Customers</h4>
+        </mat-list-item>
+        <mdc-list-divider padded="true"></mdc-list-divider>
+        <mat-list-item>
+          <mat-icon mat-list-icon>motorcycle</mat-icon>
+          <h4 mat-line>Delivery</h4>
+        </mat-list-item>
+        <mdc-list-divider padded="true"></mdc-list-divider>
+        <mat-list-item>
+          <mat-icon mat-list-icon>restaurant</mat-icon>
+          <h4 mat-line>Products</h4>
+        </mat-list-item>
+        <mdc-list-divider padded="true"></mdc-list-divider>
+        <mat-list-item>
+          <mat-icon mat-list-icon>payment</mat-icon>
+          <h4 mat-line>Payments</h4>
+        </mat-list-item>
+        <mdc-list-divider padded="true"></mdc-list-divider>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+      <div class="admin-outlet" #adminOutlet>
+        <router-outlet></router-outlet>
+      </div>    
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
+

@@ -1,16 +1,18 @@
 import { Injectable, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocalStorage, SessionStorage, StorageProperty } from 'h5webstorage';
 import { CryptService } from './crypt.service';
 import { HttpService } from './http.service';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable()
 export class SessionService {
 
-	@StorageProperty({ storage: 'Session' }) public userRole: string = null;
-	@StorageProperty({ storage: 'Session' }) public userData: any = null;
-  @StorageProperty({ storage: 'Session' }) public isLoggedIn: boolean = false;
+	public userRoleId: number = null;
+	public userData: any = null;
+  public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  @StorageProperty({ storage: 'Session'}) public session: boolean = false;
   @StorageProperty({ storage: 'Local' }) public keepLoggedIn: boolean = true;
   @StorageProperty({ storage: 'Local' }) private accessData: any = null;
 
@@ -19,16 +21,23 @@ export class SessionService {
     private sessionStore: SessionStorage,
     private apiService: HttpService,
     private auth: AuthService,
-    private crypt: CryptService
-  ) { }
+    private crypt: CryptService,
+    private router: Router
+  ) { 
+    this.sessionServiceInit();
+  }
 
   sessionServiceInit() {
-    if (this.keepLoggedIn) {
+    if (this.keepLoggedIn && this.accessData != null) {
       console.log("Login is persistent");
-      if (this.isLoggedIn) {
+      if (this.session && this.userData != null) {
         return;
       } else {
-        this.start(this.accessData);
+        console.log("Starting session..");
+        let data: any = this.accessData;
+        let userRoleHash = this.accessData['userRole'];
+        data['userRoleId'] = this.getUserRoleIdFromHash(userRoleHash);
+        this.start(data);
       }
     } else {
       this.end();
@@ -40,17 +49,21 @@ export class SessionService {
   		data => {
         let role: string = this.crypt.encrypt(this.getUserRole(data.userRoleId));
         this.userData = data;
-        this.isLoggedIn = true;
-        this.userRole = role;
+        this.session = true;
+        this.isLoggedIn.next(true);
+        this.userRoleId = data.userRoleId;
         this.accessData = {
-          'email': data.Email,
+          'email': data.email,
           'userRole': role,
-          'userId': data.userId
+          'userId': data.id
         };
   		},
   		error => {
   			console.log(error);
-  		}
+  		},
+      () => {
+        this.router.navigateByUrl(this.navigate());
+      }
   	);
   }
 
@@ -58,15 +71,11 @@ export class SessionService {
     !this.keepLoggedIn;
   }
 
-  checkLogin(): Observable<any> {
-    let data = {
-      "isLoggedIn": this.isLoggedIn,
-      "userRole": this.userRole
-    };
-    return Observable.of(data);
+  checkLogin(): Observable<boolean> {
+    return this.isLoggedIn;
   }
 
-  getUserRole(userRoleId) {
+  getUserRole(userRoleId): string {
     let role: string;
     switch(userRoleId) {
       case 1: {
@@ -89,8 +98,46 @@ export class SessionService {
     return role;
   }
 
+  getUserRoleIdFromHash(userRoleHash): number {
+    if (this.crypt.compare(userRoleHash,"admin")) {
+      return 1;
+    } else if (this.crypt.compare(userRoleHash,"customer")) {
+      return 2;
+    } else if (this.crypt.compare(userRoleHash,"deliveryman")) {
+      return 3;
+    } else if (this.crypt.compare(userRoleHash,"chief")) {
+      return 4;
+    }
+  }
+
+  navigate(): string {
+    let route: string;
+    switch(this.userRoleId) {
+      case 1: {
+        route = "/admin";
+        break; 
+      }
+      case 2: {
+        route = "/customer";
+        break; 
+      }
+      case 3: {
+        route = "/deliveryman";
+        break; 
+      }
+      case 4: {
+        route = "/chief";
+        break; 
+      }
+    }
+    return route;
+  }
+
   end() {
+    this.userData = null;
+    this.userRoleId = null;
+    this.isLoggedIn.next(false);
     this.sessionStore.clear();
-    this.localStore.clear();
+    //this.localStore.clear();
   }
 }

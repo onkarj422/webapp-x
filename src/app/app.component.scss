@@ -19,6 +19,12 @@ p {
 .tabs {
 }
 
-.tab-button {
+.mat-button.tab-button {
+	color: whitesmoke;
+	min-width: 1%;
+}
+
+.mat-menu-panel {
+	background: #222d32;
 	color: whitesmoke;
 }

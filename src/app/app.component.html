@@ -1,22 +1,36 @@
-<mdc-app-bar [mdc-elevation]="5" class="tab-bar">
+<mdc-app-bar #appbar [mdc-elevation]="5" class="tab-bar">
   <mdc-app-bar-row>
     <mdc-app-bar-section align="start">
+      <button *ngIf="media.isActive('lt-sm')" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <mat-nav-list fxLayout="column">
+          <ng-container *ngTemplateOutlet="tabs"></ng-container>
+        </mat-nav-list>
+      </mat-menu>
       <mdc-app-bar-title fxLayout="column">
-       <span mdc-typography-display1>FitSine</span>
+        <span mdc-typography-display1>FitSine</span>
       </mdc-app-bar-title>
     </mdc-app-bar-section>
     <mdc-app-bar-section align="end">
-      <div class="tabs" fxLayout="row">
-        <button class="tab-button" routerLink="/home" routerLink="/" mat-button>HOME</button>
-        <button class="tab-button" mat-button>SALADS</button>
-        <button class="tab-button" mat-button>PLANS</button>
-        <button class="tab-button" mat-button>ORDERS</button>
-        <button class="tab-button" routerLink="/admin" mat-button>ADMIN</button>
-      </div> 
-      <button (click)="openLogin()" color="accent" mat-raised-button>SIGN IN</button>
+      <div *ngIf="media.isActive('gt-xs')">
+        <mat-nav-list class="tabs" fxLayout="row" *ngIf="tabs">
+          <ng-container *ngTemplateOutlet="tabs"></ng-container>
+        </mat-nav-list>
+      </div>
+      <button *ngIf="!isLoggedIn" (click)="openLogin()" color="accent" mat-raised-button>SIGN IN</button>
+      <button *ngIf="isLoggedIn" (click)="signOut()" color="accent" mat-raised-button>SIGN OUT</button>
     </mdc-app-bar-section>
   </mdc-app-bar-row>
 </mdc-app-bar>
-<div class="outlet-container">
+<ng-template #tabs>
+  <button class="tab-button" routerLink="/home" routerLink="/" mat-button>HOME</button>
+  <button class="tab-button" mat-button>SALADS</button>
+  <button class="tab-button" mat-button>PLANS</button>
+  <button class="tab-button" mat-button>ORDERS</button>
+  <button class="tab-button" routerLink="/admin" mat-button>ADMIN</button>
+</ng-template>
+<div class="outlet-container" #outlet>
   <router-outlet></router-outlet>
 </div>

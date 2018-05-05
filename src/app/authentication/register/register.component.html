@@ -39,12 +39,10 @@
     <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
       <ng-template matStepLabel>DELIVERY ADDRESS</ng-template>
       <div>
-        <p>
-          <mat-form-field custom custom-width="100%" color="accent" hintLabel="Flat/House Number, Building/Apartment, Street">
-            <textarea matInput name="address" placeholder="Street Address" formControlName="address"></textarea>
-            <mat-error *ngIf="formArray?.get([2]).controls.address.errors?.required">Address is <strong>required!</strong></mat-error>
-          </mat-form-field>
-        </p>
+        <mat-form-field custom custom-width="100%" color="accent" hintLabel="Flat/House Number, Building/Apartment, Street">
+          <textarea matInput name="address" placeholder="Street Address" formControlName="address"></textarea>
+          <mat-error *ngIf="formArray?.get([2]).controls.address.errors?.required">Address is <strong>required!</strong></mat-error>
+        </mat-form-field>
         <mat-form-field color="accent">
           <input matInput type="text" name="area" placeholder="area" formControlName="area" required>
           <mat-error *ngIf="formArray?.get([2]).controls.area.errors?.required">Area is <strong>required!</strong></mat-error>

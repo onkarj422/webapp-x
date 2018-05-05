@@ -26,3 +26,15 @@ body {
 .twenpxdiv {
 	height: 20px;
 }
+
+@media (min-width: 0px) and (max-width: 960px) {
+	.mat-toolbar-row {
+		min-height: 64px;
+	}
+}
+
+@media (min-width: 0px) and (max-width: 960px) {
+	.mdc-top-app-bar {
+		min-height: 64px;
+	}
+}

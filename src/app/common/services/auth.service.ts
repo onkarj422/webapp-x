@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpService } from './http.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
 
 @Injectable()
 export class AuthService {

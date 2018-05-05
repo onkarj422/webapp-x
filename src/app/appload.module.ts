@@ -14,8 +14,12 @@ import { SessionService } from './common/services/session.service';
   		}
   ]
 })
-export class ApploadModule { }
+export class ApploadModule { 
+
+  constructor(private session: SessionService) {}
+
+}
 
 export function sessionInit(session: SessionService) {
-  session.sessionServiceInit();
+  console.log("App is loading");
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpHeaders, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, pipe, throwError } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry, tap } from 'rxjs/operators';
-import 'rxjs/Rx';
+import { ICustomer } from '../interfaces/customer';
 
 @Injectable()
 export class HttpService {
@@ -66,6 +66,16 @@ export class HttpService {
   		);
   }
 
+  getData(data: string): Observable<any> {
+    return this.http
+      .get<ICustomer[]>(
+        this.apiURL+data
+      )
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
 	  if (error.error instanceof ErrorEvent) {
 	    // A client-side or network error occurred. Handle it accordingly.
@@ -78,7 +88,6 @@ export class HttpService {
 	      `body was: ${error.error}`);
 	  }
 	  // return an ErrorObservable with a user-facing error message
-	  return new ErrorObservable(
-	    'Something bad happened; please try again later.');
+	  return Observable.throw(error.statusText);
 		};
 }
