@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../common/services/data.service';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { ICustomer } from '../../common/interfaces/customer';
+import { map } from 'rxjs/operators';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { ICustomers } from '../../common/interfaces/customers';
 
 @Component({
   selector: 'app-customers',
@@ -10,31 +11,28 @@ import { ICustomer } from '../../common/interfaces/customer';
 })
 export class CustomersComponent implements OnInit {
 
-	displayedColumns = ['id', 'name', 'mobileNumber', 'address', 'area', 'email' ];
-	customerData: ICustomer[];
-	dataSource = new MatTableDataSource<ICustomer>(this.customerData);
+	displayedColumns = ['id', 'name', 'mobileNumber', 'address', 'area', 'email'];
+	dataSource;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private data: DataService) { 
-  	this.data.getCustomers()
-  		.subscribe(
-  			data => {
-  				this.customerData = data;
-  				console.log(this.customerData);
-  				let arr = [];
-  				data.forEach(function(element) {
-  					arr.push(element.values);
-  				});
-  				console.log(arr);	
-  				var obj = data.reduce(function(acc, cur, i) {
-  					acc[i] = cur;
-  					return acc;
-					}, {});
-  				console.log(obj);
-  			}
-  		);
+  	
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
   }
 
   ngOnInit() {
-
+    this.data.getIt('customers')
+      .subscribe(
+        data => {
+          this.dataSource = data as ICustomers;
+          this.dataSource = new MatTableDataSource<ICustomers>(data);
+          this.dataSource.sort = this.sort;
+        }
+      );
   }
 }

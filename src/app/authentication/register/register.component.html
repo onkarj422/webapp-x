@@ -29,7 +29,7 @@
         </mat-form-field>
         <div class="fivepxdiv"></div>
         <mat-form-field color="accent" hintLabel="Max 10 digits">
-          <input matInput (keypress)="mobileNoValidation($event)" #contactInput type="text" name="contact" placeholder="Mobile Number" minlength="10" maxlength="10" formControlName="contact" required>
+          <input matInput (keypress)="mobileNoValidation($event)" #contactInput type="text" name="mobileNumber" placeholder="Mobile Number" minlength="10" maxlength="10" formControlName="contact" required>
           <mat-hint align="end">{{contactInput.value?.length || 0}}/10</mat-hint>
           <mat-error *ngIf="formArray?.get([1]).controls.contact.errors?.required">Mobile number is <strong>required!</strong></mat-error>
           <mat-error *ngIf="formArray?.get([1]).controls.contact.errors?.minlength">Mobile number should be exactly 10 digits!</mat-error>

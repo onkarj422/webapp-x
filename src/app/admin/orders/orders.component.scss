@@ -5,5 +5,16 @@
 }
 
 .orders-layout {
-	
+	display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 800px;
+  overflow: auto;
+}
+
+.mat-cell {
+	display: table-cell;
+	min-width: 90px;
+	vertical-align: middle;
+	font-size: 12px;
 }

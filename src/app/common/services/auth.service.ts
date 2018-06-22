@@ -14,7 +14,7 @@ export class AuthService {
 
 	login(data) {
     return new Promise((resolve,reject) => {
-      this.apiService.apiLogin(data).subscribe(
+      this.apiService.post(data, "login").subscribe(
         data => {
           resolve(data);
         },
@@ -28,7 +28,7 @@ export class AuthService {
 
   register(data) {
     return new Promise((resolve, reject) => {
-      this.apiService.apiRegister(data).subscribe(
+      this.apiService.post(data, "register").subscribe(
         data => {
           resolve(data);
         },

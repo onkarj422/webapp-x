@@ -13,6 +13,6 @@ export class EventService {
 
   hideOnScroll(scrollEvent: string) {
   	this.event.next(scrollEvent);
-  }	
+  }
 
 }

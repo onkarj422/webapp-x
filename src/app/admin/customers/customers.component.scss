@@ -2,6 +2,19 @@
 	display: flex;
   flex-direction: column;
   max-height: 500px;
-  min-width: 300px;
+  min-width: 800px;
   overflow: auto;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+  margin: 10px;
+}
+
+.mat-cell {
+	display: table-cell;
+	min-width: 90px;
+	vertical-align: middle;
+	font-size: 12px;
 }

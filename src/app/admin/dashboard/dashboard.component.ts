@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import {filter} from 'rxjs/operators';
 import { EventService } from '../../common/services/event.service';
+import { TaskService } from '../../common/services/task.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,12 +16,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('matToolbar') matToolbar;
   @ViewChild('adminOutlet') adminOutlet;
 
-  constructor(public media: ObservableMedia, private event: EventService) { 
+  constructor(public media: ObservableMedia, private event: EventService, private task: TaskService) { 
   	this.mobileDevice = this.media.isActive('xs');
   }
 
   ngOnInit() {
     this.hideOnScroll();
+  }
+
+  runTaskJob() {
+    this.task.runTaskJob();
   }
 
   hideOnScroll() {

@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
           value[l] = formArray[n][l];
         }
       }
-      value['userRole'] = 2;
+      value['userRoleId'] = 2;
       this.auth.register(value).then(
         data => {
           if (data['result']) {
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  get formArray(): AbstractControl | null { return <FormArray>this.registerForm.get('formArray'); }
+  get formArray() { return <FormArray>this.registerForm.get('formArray'); }
 
   ngOnInit() {
     this.registerForm = new FormGroup({

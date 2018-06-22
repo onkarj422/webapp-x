@@ -20,14 +20,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 	constructor(
 		private dialog: MdcDialog,
 		private event: EventService, 
-		private media: ObservableMedia,
+		public media: ObservableMedia,
 		private session: SessionService) {
 		
 	}
 
 	ngOnInit() {
 		this.session.checkLogin().subscribe(isLoggedIn => {
-			console.log(isLoggedIn);
 			if (!isLoggedIn) {
 				this.isLoggedIn = false;
 			} else {

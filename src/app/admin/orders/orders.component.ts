@@ -1,74 +1,61 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { CustomValidators } from 'ng4-validators';
-import { Subject ,  Observable } from 'rxjs';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Subject ,  Observable, pipe } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { DataService } from '../../common/services/data.service';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { OrderService } from '../../common/services/order.service';
+import { TaskService } from '../../common/services/task.service';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, AfterViewInit {
 
-	customerForm: FormGroup;
-	orderForm: FormGroup;
-	deliveryForm: FormGroup;
-  @ViewChild('stepper') stepper;
   addFab: boolean = false;
-  existingCustomer: boolean = true;
-	clickEvent = new Subject<any>();
-	customer = this.clickEvent.asObservable();
-  finalStep: boolean = false;
 
-  constructor(private fb: FormBuilder) { 
+	orderDataColumns = ['id', 'date', 'mealName', 'mealSize', 'foodType', 'status', 'payment', 'customerId'];
+  orderDataSource;
 
+  constructor(private data: DataService, private order: OrderService, private task: TaskService) {
+    
   }
 
-  selectionChange(event: any) {
-    console.log(event);
-    if (event.selectedIndex == 2) {
-      this.finalStep = true;
-    } else {
-      this.finalStep = false;
+  loadData() {
+    this.data.getIt('orders')
+      .pipe(
+        map(data => this.mapOrderData(data))
+      )
+      .subscribe(data => {
+        this.orderDataSource = new MatTableDataSource<any>(data);
+      });
+    this.order.updateOrders.next(false);
+  } 
+
+  mapOrderData(data: any) {
+    for (var i in data) {
+      data[i].date = this.order.formatDate(data[i].date);
     }
+    return data;
   }
 
-  submitOrder() {
-    console.log(this.customerForm.value);
-    this.addFab = false;
-  }
-
-  mobileNoValidation(event: any) {
-  	const pattern = /[0-9\+\-\ ]/;
-    let inputChar = String.fromCharCode(event.charCode);
-    if (event.keyCode != 8 && !pattern.test(inputChar)) {
-      event.preventDefault();
-    }
+  deliveryView(id) {
+    this.data.getItWhere('o_deliveries', 'id' , id).then(data => {
+      console.log(data);
+    });
   }
 
   ngOnInit() {
-  	let addCustomerFormGroup = {
-  		firstname: new FormControl('', Validators.required),
-      lastname: new FormControl('', Validators.required),
-      contact: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10)])),
-      email: new FormControl('', Validators.email),
-      address: new FormControl('', Validators.required),
-      area: new FormControl('', Validators.required)
-  	};
-  	let existingCustomerFormGroup = {
-  		customerId: new FormControl('',Validators.required)
-  	};
-  	this.customerForm = new FormGroup(existingCustomerFormGroup);
-  	this.customer.subscribe(existing => {
-  		if (!existing) {
-  			this.existingCustomer = false;
-  			this.customerForm = new FormGroup(addCustomerFormGroup);
-  		} else {
-  			this.existingCustomer = true;
-  			this.customerForm = new FormGroup(existingCustomerFormGroup);
-  		}
-  	});
+    this.loadData();
+    this.order.updateOrders.asObservable().subscribe(data => {
+      if (data == true) {
+        this.loadData();
+      }
+    });
   }
 
+  ngAfterViewInit() {
 
+  }
 }

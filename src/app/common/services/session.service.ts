@@ -11,6 +11,7 @@ export class SessionService {
 
 	public userRoleId: number = null;
 	public userData: any = null;
+  public get userId() { return this.userData.id; }
   public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   @StorageProperty({ storage: 'Session'}) public session: boolean = false;
   @StorageProperty({ storage: 'Local' }) public keepLoggedIn: boolean = true;
@@ -45,7 +46,7 @@ export class SessionService {
   }
 
   start(data) {
-  	this.apiService.apiSessionInit(data).subscribe(
+  	this.apiService.post(data, "access").subscribe(
   		data => {
         let role: string = this.crypt.encrypt(this.getUserRole(data.userRoleId));
         this.userData = data;
@@ -72,7 +73,7 @@ export class SessionService {
   }
 
   checkLogin(): Observable<boolean> {
-    return this.isLoggedIn;
+    return this.isLoggedIn.asObservable();
   }
 
   getUserRole(userRoleId): string {
@@ -118,15 +119,15 @@ export class SessionService {
         break; 
       }
       case 2: {
-        route = "/customer";
+        route = "/home";
         break; 
       }
       case 3: {
-        route = "/deliveryman";
+        route = "/admin/delivery";
         break; 
       }
       case 4: {
-        route = "/chief";
+        route = "/admin/food";
         break; 
       }
     }
@@ -138,6 +139,6 @@ export class SessionService {
     this.userRoleId = null;
     this.isLoggedIn.next(false);
     this.sessionStore.clear();
-    //this.localStore.clear();
+    this.localStore.clear();
   }
 }

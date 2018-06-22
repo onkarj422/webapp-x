@@ -15,24 +15,24 @@
  	<mat-sidenav-container class="sidenav-container">
     <mat-sidenav class="sidenav-panel" mode="side" opened="media.isActive('gt-xs')" [mdc-elevation]="10" #sidenav>
       <mat-nav-list>
-        <mat-list-item [routerLink]="['/admin/orders']">
+        <a mat-list-item [routerLink]="['/admin/orders']">
           <mat-icon mat-list-icon>add_shopping_cart</mat-icon>
           <h4 mat-line>Orders</h4>
-        </mat-list-item>
+        </a>
         <mdc-list-divider padded="true"></mdc-list-divider>
         <mat-list-item [routerLink]="['/admin/customers']">
           <mat-icon mat-list-icon>people</mat-icon>
           <h4 mat-line>Customers</h4>
         </mat-list-item>
         <mdc-list-divider padded="true"></mdc-list-divider>
-        <mat-list-item>
+        <mat-list-item [routerLink]="['/admin/delivery']">
           <mat-icon mat-list-icon>motorcycle</mat-icon>
           <h4 mat-line>Delivery</h4>
         </mat-list-item>
         <mdc-list-divider padded="true"></mdc-list-divider>
-        <mat-list-item>
+        <mat-list-item [routerLink]="['/admin/food']">
           <mat-icon mat-list-icon>restaurant</mat-icon>
-          <h4 mat-line>Products</h4>
+          <h4 mat-line>Food</h4>
         </mat-list-item>
         <mdc-list-divider padded="true"></mdc-list-divider>
         <mat-list-item>
@@ -40,11 +40,16 @@
           <h4 mat-line>Payments</h4>
         </mat-list-item>
         <mdc-list-divider padded="true"></mdc-list-divider>
+        <mat-list-item>
+          <h4 (click)="runTaskJob()" mat-line>RUN TASKS</h4>
+        </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
       <div class="admin-outlet" #adminOutlet>
-        <router-outlet></router-outlet>
+        <router-outlet>
+          
+        </router-outlet>
       </div>    
     </mat-sidenav-content>
   </mat-sidenav-container>

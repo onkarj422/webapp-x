@@ -8,6 +8,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { CustomDirective } from './directives/custom.directive';
 import { DividerComponent } from './components/divider.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MaterialTimeControlModule } from './modules/material-time-control/material-time-control.module';
+import { AmazingTimePickerModule } from 'amazing-time-picker';
 
 @NgModule({
   imports: [
@@ -17,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     MdcModule,
     FlexLayoutModule,
     AngularMaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialTimeControlModule
   ],
   exports: [
   	CommonModule,
@@ -27,7 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
     FlexLayoutModule,
     AngularMaterialModule,
     CustomDirective,
-    DividerComponent
+    DividerComponent,
+    MaterialTimeControlModule,
+    AmazingTimePickerModule
   ],
   declarations: [
     CustomDirective, 

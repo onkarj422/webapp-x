@@ -6,6 +6,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CustomersComponent } from './customers/customers.component';
 import { OrdersComponent } from './orders/orders.component';
 import { AppCommonModule } from '../common/common.module';
+import { AddOrdersComponent } from './add-orders/add-orders.component';
+import { FoodComponent } from './food/food.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 @NgModule({
   imports: [
@@ -13,6 +16,6 @@ import { AppCommonModule } from '../common/common.module';
     AdminRoutingModule,
     AppCommonModule
   ],
-  declarations: [DashboardComponent, CustomersComponent, OrdersComponent]
+  declarations: [DashboardComponent, CustomersComponent, OrdersComponent, AddOrdersComponent, FoodComponent, DeliveryComponent]
 })
 export class AdminModule { }

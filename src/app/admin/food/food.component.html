@@ -1,0 +1,17 @@
+<h2 class="mat-h2">Food Orders</h2>
+<div class="food-table mat-elevation-z4">
+	<table mat-table #table matSort [dataSource]="foodTasksDataSource">
+		<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+			<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+      <td mat-cell *matCellDef="let foodTask  ; let i = index; ">{{ column.cell(foodTask) }}</td>
+		</ng-container>
+		<ng-container [matColumnDef]="actionColumn.columnDef">
+			<th mat-header-cell [ngClass]="'mat-table-column'" *matHeaderCellDef>{{ actionColumn.header }}</th>
+      <td mat-cell *matCellDef="let foodTask  ; let i = index; ">
+				<button color="accent" (click)="setStatusComplete(actionColumn.cell(foodTask))" mat-button>DONE!</button>
+      </td>
+		</ng-container>
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+	</table>
+</div>

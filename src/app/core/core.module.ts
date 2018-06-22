@@ -7,6 +7,8 @@ import { HttpService } from '../common/services/http.service';
 import { SessionService } from '../common/services/session.service';
 import { EventService } from '../common/services/event.service';
 import { DataService } from '../common/services/data.service';
+import { OrderService } from '../common/services/order.service';
+import { TaskService } from '../common/services/task.service';
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ export class CoreModule {
         AuthGuard,
         AuthService,
         EventService,
-        DataService
+        DataService,
+        OrderService,
+        TaskService
       ]
     };
   }
